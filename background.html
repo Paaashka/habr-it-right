@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+		<script>
+		/*
+		Typo storage
+		*/
+		var lastTypo;
+		
+		/*
+		Save default templates to localStorage if none are present
+		*/
+		if(!localStorage['typo_title_tpl'])
+			localStorage['typo_title_tpl'] = "Опечатка в посте «{title}»";
+		
+		if(!localStorage['typo_text_tpl'])
+			localStorage['typo_text_tpl'] = 'Здравствуйте.\\nУ вас опечатка в посте «<a href="{url}">{title}</a>».\\nВ предложении «{sentence}» у вас написано «{word}», а правильно — «!!!».';
+			
+			
+		/*
+		Controller
+		*/
+		var Typo = {
+			/*
+			Saves typo to storage
+			*/
+			sendMessage: function(request){
+				
+				lastTypo = request.typo;
+				
+				window.open('http://'+request.typo.username+'.habrahabr.ru/mail/write/'+request.typo.author+'/', '_blank');
+			},
+			
+			/*
+			Get typo
+			*/
+			getMessage: function(request){
+				
+				if(lastTypo.word){
+					chrome.extension.sendRequest(
+						{
+							type: 'sendTypo', 
+							message: {
+								title: renderTpl(localStorage['typo_title_tpl'], lastTypo),
+								text: renderTpl(localStorage['typo_text_tpl'], lastTypo)
+							}
+						}
+					);
+				}
+				
+				// Clear storage
+				lastTypo = {};
+			}
+		}
+		
+		/*
+		Router
+		*/
+		var requestHanlder = function(request, sender, sendResponse){
+			
+			if( Typo[request.type] ){
+				
+				Typo[request.type](request);
+				
+			}else{
+				
+				console.log('There is no "'+request.type+'" in Typo controller');
+				
+			}
+		}
+		
+		/*
+		Template renderer
+		*/
+		var renderTpl = function(tpl, data){
+			tpl = tpl.replace(/{(.+?)}/g, "'+data.$1+'");
+			
+			return eval("'"+tpl+"'");
+		}
+		
+		chrome.extension.onRequest.addListener( requestHanlder );
+		
+        </script>
+    </body>
+</html>

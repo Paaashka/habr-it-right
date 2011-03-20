@@ -1,0 +1,12 @@
+{
+  "name": "Habr it right!",
+  "version": "1.0",
+  "description": "Helps you sending typo reports to the author.",
+  "background_page": "background.html",
+  "content_scripts": [{
+      "js": [ "/js/jquery-1.5.1.min.js", "/js/habritright.js" ],
+      "matches": [ "http://*.habrahabr.ru/*", "http://habrahabr.ru/*"]
+   }],
+   
+   "options_page": "options.html"
+}
