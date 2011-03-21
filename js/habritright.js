@@ -46,7 +46,7 @@
 						author: author, 
 						title: title,
 						url: url,
-						username: 'paaashka', 
+						username: username, 
 						isphrase: isPhrase, 
 						word: selectionText,
 						sentence: selectionSentence
