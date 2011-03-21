@@ -15,13 +15,13 @@
 					
 					
 					// Get author
-					var author = $('div.entry-info-wrap div.author span').text(),
+					var author = $selectionParent.parent().find('div.entry-info-wrap div.author span').text(),
 					
 					// post title
-						title = $('span.topic').text(),
+						title = $selectionParent.parent().find('.topic').text(),
 						
-					// URL
-						url = document.URL.replace(/(.*)\/.*$/, '$1/'), // without "#habracut" and others
+					// URL without "#habracut" and others
+						url = $selectionParent.parent().find('a.topic').attr('href') || document.URL.replace(/(.*)\/.*$/, '$1/'), 
 					
 					// user
 						username = $('div.header a.habrauser').text(),

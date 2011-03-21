@@ -1,6 +1,6 @@
 {
   "name": "Habr it right!",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Helps you sending typo reports to the author.",
   "background_page": "background.html",
   "content_scripts": [{
